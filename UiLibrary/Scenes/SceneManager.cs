@@ -60,6 +60,7 @@ namespace UILibrary.Scenes
             GraphicsDevice.Clear(Color.Black);
             spriteBatch.Begin();
             active?.Draw(spriteBatch, gameTime);
+            active?.DrawGUI(spriteBatch, gameTime);
             active?.UIManager.Draw(spriteBatch);
             spriteBatch.End();
         }

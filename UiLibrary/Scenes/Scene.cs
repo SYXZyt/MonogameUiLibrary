@@ -16,6 +16,7 @@ namespace UILibrary.Scenes
         public abstract void UnloadContent();
         public abstract void Update(GameTime gameTime);
         public abstract void Draw(SpriteBatch spriteBatch, GameTime gameTime);
+        public abstract void DrawGUI(SpriteBatch spriteBatch, GameTime gameTime);
 
         public Scene()
         {
