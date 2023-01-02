@@ -14,6 +14,9 @@ namespace UILibrary.Scenes
         protected SpriteBatch spriteBatch;
         public readonly GraphicsDeviceManager graphics;
 
+        public delegate void ExitMethod();
+        private static List<ExitMethod> exitMethods;
+
         public void AddScene(string sceneName, Scene scene) => scenes[sceneName] = scene;
         public void LoadScene(string sceneName)
         {
@@ -34,6 +37,9 @@ namespace UILibrary.Scenes
         protected override void OnExiting(object sender, EventArgs args)
         {
             active?.UnloadContent();
+
+            if (exitMethods.Count > 0) Console.WriteLine("Executing 3rd party exit methods");
+            foreach (ExitMethod exitMethod in exitMethods) exitMethod.Invoke();
         }
 
         protected override void BeginRun()
@@ -65,6 +71,8 @@ namespace UILibrary.Scenes
             spriteBatch.End();
         }
 
+        public static void AddNewExitMethod(ExitMethod method) => exitMethods.Add(method);
+
         public SceneManager(Vector2 screenSize)
         {
             graphics = new(this)
@@ -75,6 +83,7 @@ namespace UILibrary.Scenes
             scenes = new();
 
             Instance = this;
+            exitMethods = new();
         }
     }
 }
