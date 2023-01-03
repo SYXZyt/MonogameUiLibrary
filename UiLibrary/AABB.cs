@@ -73,8 +73,10 @@ namespace UILibrary
             //This algorithm only checks if the top left of b is overlapping a
             //This needs improving to allow all other corners to collide
             if (
-                (b.x >= a.x && b.x < a.x + a.width) &&
-                (b.y >= a.y && b.y < a.y + a.height)
+                a.x < b.x + b.width &&
+                a.x + a.width > b.x &&
+                a.y < b.y + b.height &&
+                a.y + a.height > b.y
                 )
             {
                 return true;
