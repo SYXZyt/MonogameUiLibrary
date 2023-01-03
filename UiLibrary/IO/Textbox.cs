@@ -55,7 +55,7 @@ namespace UILibrary.IO
         public override void Update()
         {
             tick++;
-            if (tick % 500 == 0) caret = !caret;
+            if (tick % 20 == 0) caret = !caret;
 
             if (!isActive) return;
 
@@ -144,7 +144,7 @@ namespace UILibrary.IO
             label.DrawWithShadow(spriteBatch);
         }
 
-        public Textbox(Vector2 position, SpriteFont font, Texture2D background, int characterLimit, float fontScale)
+        public Textbox(Vector2 position, SpriteFont font, Texture2D background, int characterLimit, float fontScale, string placeholder = "")
         {
             this.position = position;
             this.font = font;
@@ -170,7 +170,7 @@ namespace UILibrary.IO
             height = (int)Math.Ceiling((max.Y * fontScale));
 
             isFocused = false;
-            this.text = new();
+            this.text = new(placeholder);
             isEntered = false;
             this.fontScale = fontScale;
             tick = 0;
