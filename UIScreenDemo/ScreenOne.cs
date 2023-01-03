@@ -45,6 +45,11 @@ namespace UIScreenDemo
             spriteBatch.DrawString(font, message, new(100, 100), Color.White);
         }
 
+        public override void DrawGUI(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+
+        }
+
         public ScreenOne() { }
     }
 }

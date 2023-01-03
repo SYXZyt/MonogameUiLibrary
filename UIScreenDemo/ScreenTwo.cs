@@ -71,5 +71,10 @@ namespace UIScreenDemo
 
             textbox.Draw(spriteBatch);
         }
+
+        public override void DrawGUI(SpriteBatch spriteBatch, GameTime gameTime)
+        {
+
+        }
     }
 }

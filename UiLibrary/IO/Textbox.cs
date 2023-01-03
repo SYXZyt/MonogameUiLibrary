@@ -11,6 +11,9 @@ namespace UILibrary.IO
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
         private static extern short GetKeyState(int keyCode);
 
+        private ulong tick;
+        private bool caret;
+
         private static bool CapsLock => (((ushort)GetKeyState(0x14)) & 0xffff) != 0;
         private static bool Shift => Keyboard.GetState().IsKeyDown(Keys.LeftShift) || Keyboard.GetState().IsKeyDown(Keys.RightShift);
 
@@ -51,6 +54,9 @@ namespace UILibrary.IO
 
         public override void Update()
         {
+            tick++;
+            if (tick % 500 == 0) caret = !caret;
+
             if (!isActive) return;
 
             //Check if the textbox is focused
@@ -133,7 +139,8 @@ namespace UILibrary.IO
             Color color = isFocused ? Color.White : Color.White * 0.7f;
             if (background is not null) spriteBatch.Draw(background, new Rectangle((int)position.X, (int)position.Y, characterLimit * charSize, height), color);
 
-            Label label = new(text.ToString(), fontScale, position, color, font, Origin.TOP_LEFT, 0);
+            string _text = $"{text}{(caret && isFocused ? "|" : "")}";
+            Label label = new(_text, fontScale, position, color, font, Origin.TOP_LEFT, 0);
             label.DrawWithShadow(spriteBatch);
         }
 
@@ -157,15 +164,17 @@ namespace UILibrary.IO
                 }
             }
 
-            string text = new(Convert.ToChar(ascii), characterLimit);
+            string text = new(Convert.ToChar(ascii), characterLimit+1);
             Vector2 max = font.MeasureString(text);
-            charSize = (int)Math.Ceiling(max.X * fontScale) / characterLimit;
+            charSize = (int)Math.Ceiling(max.X * fontScale) / characterLimit+1;
             height = (int)Math.Ceiling((max.Y * fontScale));
 
             isFocused = false;
             this.text = new();
             isEntered = false;
             this.fontScale = fontScale;
+            tick = 0;
+            caret = true;
         }
     }
 }
