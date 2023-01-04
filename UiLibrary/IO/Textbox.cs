@@ -90,7 +90,7 @@ namespace UILibrary.IO
 
             //Check if the textbox is focused
             {
-                AABB textBox = new((short)position.X, (short)position.Y, (short)(characterLimit * charSize), (short)height);
+                AABB textBox = new((short)(position.X - originOffset.X), (short)position.Y, (short)(characterLimit * charSize), (short)height);
                 AABB mouse = (AABB)MouseController.GetMousePosition();
 
                 if (textBox.CollisionCheck(mouse) && MouseController.IsPressed(MouseController.MouseButton.LEFT)) isFocused = true;
