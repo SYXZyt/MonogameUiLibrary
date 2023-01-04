@@ -166,10 +166,10 @@ namespace UILibrary.IO
         public override void Draw(SpriteBatch spriteBatch)
         {
             Color color = isFocused ? Color.White : Color.White * 0.7f;
-            if (background is not null) spriteBatch.Draw(background, new Rectangle((int)(position.X + originOffset.X), (int)(position.Y + originOffset.Y), characterLimit * charSize, height), color);
+            if (background is not null) spriteBatch.Draw(background, new Rectangle((int)(position.X - originOffset.X), (int)position.Y, characterLimit * charSize, height), color);
 
             string _text = $"{text}{(caret && isFocused ? "|" : "")}";
-            Label label = new(_text, fontScale, position + originOffset, color, font, Origin.TOP_LEFT, 0);
+            Label label = new(_text, fontScale, position - originOffset, color, font, Origin.TOP_LEFT, 0);
             label.DrawWithShadow(spriteBatch);
         }
 
