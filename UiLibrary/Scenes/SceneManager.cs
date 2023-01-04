@@ -7,6 +7,7 @@ namespace UILibrary.Scenes
     public class SceneManager : Game
     {
         public static SceneManager Instance { get; protected set; } = null;
+        public bool ManagedUIManager { get; set; } = true; //By default we always want to automatically update/draw the manager
         
         protected readonly Dictionary<string, Scene> scenes;
         protected Scene active;
@@ -57,7 +58,7 @@ namespace UILibrary.Scenes
             MouseController.Update();
             KeyboardController.Update();
 
-            active?.UIManager.Update();
+            if (ManagedUIManager) active?.UIManager.Update();
             active?.Update(gameTime);
         }
 
@@ -67,7 +68,7 @@ namespace UILibrary.Scenes
             spriteBatch.Begin();
             active?.Draw(spriteBatch, gameTime);
             active?.DrawGUI(spriteBatch, gameTime);
-            active?.UIManager.Draw(spriteBatch);
+            if (ManagedUIManager) active?.UIManager.Draw(spriteBatch);
             spriteBatch.End();
         }
 
