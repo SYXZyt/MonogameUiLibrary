@@ -14,6 +14,8 @@ namespace UILibrary.IO
         private ulong tick;
         private bool caret;
 
+        private Origin origin;
+
         private static bool CapsLock => (((ushort)GetKeyState(0x14)) & 0xffff) != 0;
         private static bool Shift => Keyboard.GetState().IsKeyDown(Keys.LeftShift) || Keyboard.GetState().IsKeyDown(Keys.RightShift);
 
@@ -26,6 +28,7 @@ namespace UILibrary.IO
 
         private bool isFocused;
         private bool isEntered;
+        private Vector2 originOffset;
         private readonly Vector2 position;
         private readonly int characterLimit;
 
@@ -50,6 +53,32 @@ namespace UILibrary.IO
         private void Append(char c)
         {
             if (text.Length < characterLimit) text.Append(c);
+        }
+
+        public void ChangeOrigin(Origin origin)
+        {
+            this.origin = origin;
+            originOffset = CalculateOriginOffset();
+        }
+
+        public Vector2 CalculateOriginOffset()
+        {
+            Vector2 size = new(characterLimit * charSize, height);
+            Vector2 originOffset = Vector2.Zero;
+
+            //This is a slightly modified version of Label::CalculateOriginOffset()
+            if (origin is Origin.TOP_LEFT or Origin.MIDDLE_LEFT or Origin.BOTTOM_LEFT) return originOffset;
+
+            if (origin is Origin.TOP_CENTRE or Origin.MIDDLE_CENTRE or Origin.BOTTOM_CENTRE)
+            {
+                originOffset.X = size.X / 2;
+            }
+            else
+            {
+                originOffset.X = size.X;
+            }
+
+            return originOffset;
         }
 
         public override void Update()
@@ -137,14 +166,14 @@ namespace UILibrary.IO
         public override void Draw(SpriteBatch spriteBatch)
         {
             Color color = isFocused ? Color.White : Color.White * 0.7f;
-            if (background is not null) spriteBatch.Draw(background, new Rectangle((int)position.X, (int)position.Y, characterLimit * charSize, height), color);
+            if (background is not null) spriteBatch.Draw(background, new Rectangle((int)(position.X + originOffset.X), (int)(position.Y + originOffset.Y), characterLimit * charSize, height), color);
 
             string _text = $"{text}{(caret && isFocused ? "|" : "")}";
-            Label label = new(_text, fontScale, position, color, font, Origin.TOP_LEFT, 0);
+            Label label = new(_text, fontScale, position + originOffset, color, font, Origin.TOP_LEFT, 0);
             label.DrawWithShadow(spriteBatch);
         }
 
-        public Textbox(Vector2 position, SpriteFont font, Texture2D background, int characterLimit, float fontScale, string placeholder = "")
+        public Textbox(Vector2 position, SpriteFont font, Texture2D background, int characterLimit, float fontScale, Origin origin, string placeholder = "")
         {
             this.position = position;
             this.font = font;
@@ -175,6 +204,8 @@ namespace UILibrary.IO
             this.fontScale = fontScale;
             tick = 0;
             caret = true;
+            this.origin = origin;
+            originOffset = CalculateOriginOffset();
         }
     }
 }
