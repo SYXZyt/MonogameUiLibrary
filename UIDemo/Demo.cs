@@ -20,6 +20,7 @@ namespace UIDemo
         private SpriteFont mainFont;
         private Label label;
         private Label fps;
+        private Label id;
 
         private Switch switch1;
         private Switch switch2;
@@ -40,6 +41,7 @@ namespace UIDemo
             uIManager.Draw(spriteBatch);
             label.DrawWithShadow(spriteBatch);
             fps.DrawWithShadow(spriteBatch);
+            id.Draw(spriteBatch);
 
             switchArray.Draw(spriteBatch);
 
@@ -51,6 +53,7 @@ namespace UIDemo
         protected override void Update(GameTime gameTime)
         {
             i++;
+            id.SetLabelText($"{switchArray.GetActiveIndex()}");
             frameRate.Update((float)gameTime.ElapsedGameTime.TotalSeconds);
             MouseController.Update();
             KeyboardController.Update();
@@ -85,6 +88,8 @@ namespace UIDemo
 
             switchArray.AddSwitch(switch1);
             switchArray.AddSwitch(switch2);
+
+            id = new("", 1f, new Vector2(300, 300), Color.White, mainFont, Origin.TOP_LEFT, 0f);
 
             uIManager.Add(textButton);
             uIManager.Add(button);
