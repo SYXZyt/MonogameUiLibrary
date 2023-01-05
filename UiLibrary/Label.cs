@@ -13,9 +13,11 @@ namespace UILibrary
         private Origin origin;
         private Vector2 originOffset;
         private float rotation;
+        private float opacity;
 
         public Vector2 Position => position;
         public float Scale => scale;
+        public float Opacity => opacity;
 
         public void SetLabelText(string label)
         {
@@ -31,6 +33,8 @@ namespace UILibrary
 
         public void SetRotation(float rotation) => this.rotation = rotation;
 
+        public void SetOpacity(float opacity) => this.opacity = Math.Clamp(opacity, 0f, 1f);
+
         public void MoveLabel(Vector2 position) => this.position = position;
 
         public void ChangeOrigin(Origin origin)
@@ -39,7 +43,7 @@ namespace UILibrary
             originOffset = CalculateOriginOffset();
         }
 
-        public void Draw(SpriteBatch spriteBatch) => spriteBatch.DrawString(font, label, position - originOffset, colour, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
+        public void Draw(SpriteBatch spriteBatch) => spriteBatch.DrawString(font, label, position - originOffset, colour * opacity, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
         public void DrawWithShadow(SpriteBatch spriteBatch)
         {
@@ -84,7 +88,7 @@ namespace UILibrary
                 y += lengthdir_y(thickness, dto_i);
 
                 Vector2 outlineOffset = new(x, y);
-                spriteBatch.DrawString(font, label, outlineOffset, Color.Black, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
+                spriteBatch.DrawString(font, label, outlineOffset, Color.Black * opacity, 0f, Vector2.Zero, scale, SpriteEffects.None, 0f);
             }
 
             //Make sure we draw the label last to make sure it appears on top of the drop shadow
@@ -135,6 +139,7 @@ namespace UILibrary
             this.origin = origin;
             originOffset = CalculateOriginOffset();
             this.rotation = rotation;
+            opacity = 1;
         }
     }
 }
