@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using System.Collections;
 
 namespace UILibrary.Buttons
 {
-    public sealed class SwitchArray : Element
+    public sealed class SwitchArray : Element, IEnumerable
     {
         private readonly List<Switch> switches;
         private int selectedSwitch;
@@ -63,6 +64,16 @@ namespace UILibrary.Buttons
         public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (Switch s in switches) s.Draw(spriteBatch);
+        }
+
+        public IEnumerator<Switch> GetEnumerator()
+        {
+            foreach (Switch s in switches) yield return s;
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
         }
 
         public SwitchArray()
