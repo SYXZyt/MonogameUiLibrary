@@ -58,7 +58,7 @@ namespace UILibrary.Scenes
             MouseController.Update();
             KeyboardController.Update();
 
-            if (ManagedUIManager) active?.UIManager.Update();
+            if (ManagedUIManager && IsActive) active?.UIManager.Update();
             active?.Update(gameTime);
         }
 
