@@ -19,6 +19,8 @@ namespace UILibrary
         public float Scale => scale;
         public float Opacity => opacity;
 
+        public void SetColour(Color colour) => this.colour = colour;
+
         public void SetLabelText(string label)
         {
             this.label = label;
@@ -42,6 +44,7 @@ namespace UILibrary
             this.origin = origin;
             originOffset = CalculateOriginOffset();
         }
+
 
         public void Draw(SpriteBatch spriteBatch) => spriteBatch.DrawString(font, label, position - originOffset, colour * opacity, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
 

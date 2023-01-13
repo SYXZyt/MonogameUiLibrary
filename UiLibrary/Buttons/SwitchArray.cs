@@ -22,7 +22,7 @@ namespace UILibrary.Buttons
             foreach (Switch s in switches)
             {
                 s.SetState(false);
-            }
+            } selectedSwitch = -1;
         }
 
         public override void Update()
