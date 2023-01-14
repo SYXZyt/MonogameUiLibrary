@@ -16,6 +16,11 @@ namespace UILibrary.Buttons
         public void AddSwitch(Switch _switch) => switches.Add(_switch);
 
         public int GetActiveIndex() => selectedSwitch;
+        public void SetActiveIndex(int selectedSwitch)
+        {
+            Clear();
+            this.selectedSwitch = selectedSwitch;
+        }
 
         public void Clear()
         {
