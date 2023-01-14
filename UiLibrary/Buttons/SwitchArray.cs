@@ -20,6 +20,7 @@ namespace UILibrary.Buttons
         {
             Clear();
             this.selectedSwitch = selectedSwitch;
+            switches[selectedSwitch].SetState(true);
         }
 
         public void Clear()
