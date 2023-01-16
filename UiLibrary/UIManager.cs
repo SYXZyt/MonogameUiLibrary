@@ -15,6 +15,8 @@ namespace UILibrary
             return elements[index];
         }
 
+        public void Clear() => elements.Clear();
+
         public void Add(Element button) => elements.Add(button);
 
         public void Update()

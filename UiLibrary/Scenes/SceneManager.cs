@@ -65,7 +65,7 @@ namespace UILibrary.Scenes
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
-            spriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            spriteBatch.Begin(samplerState: SamplerState.PointClamp, sortMode: SpriteSortMode.Deferred, blendState: BlendState.NonPremultiplied);
             active?.Draw(spriteBatch, gameTime);
             active?.DrawGUI(spriteBatch, gameTime);
             if (ManagedUIManager) active?.UIManager.Draw(spriteBatch);
