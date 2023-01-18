@@ -7,8 +7,8 @@ namespace UILibrary
     /// </summary>
     public sealed class AABB
     {
-        private readonly short x;
-        private readonly short y;
+        private short x;
+        private short y;
         private readonly short width;
         private readonly short height;
 
@@ -38,6 +38,12 @@ namespace UILibrary
 
         public static explicit operator Rectangle(AABB aabb) => new(aabb.x, aabb.y, aabb.width, aabb.height);
         public static explicit operator AABB((int x, int y) position) => new((short)position.x, (short)position.y, 1, 1);
+
+        public void Move(Vector2 newPos)
+        {
+            x = (short)newPos.X;
+            y = (short)newPos.Y;
+        }
 
         public override bool Equals(object obj)
         {
@@ -97,6 +103,8 @@ namespace UILibrary
         /// </summary>
         /// <returns>A <see cref="Vector2"/> storing the centre of this <see cref="AABB"/></returns>
         public Vector2 Centre() => new(x + (width / 2), y + (height / 2));
+
+        public static explicit operator Vector2(AABB aabb) => new(aabb.X, aabb.Y); 
 
         public AABB()
         {
