@@ -5,6 +5,32 @@ namespace UILibrary
 {
     public static class Extension
     {
+        public static Texture2D CreateTexture(GraphicsDevice device, int width, int height, Func<int, Color> paint)
+        {
+            //Initialize a texture
+            Texture2D texture = new(device, width, height);
+
+            //The array holds the color for each pixel in the texture
+            Color[] data = new Color[width * height];
+            for (int pixel = 0; pixel < data.Length; pixel++)
+            {
+                //The function applies the color according to the specified pixel
+                data[pixel] = paint(pixel);
+            }
+
+            //Set the colour of the texture
+            texture.SetData(data);
+
+            return texture;
+        }
+
+        /// <summary>
+        /// Draw the texture
+        /// </summary>
+        /// <param name="texture"></param>
+        /// <param name="position">The position to draw the texture at</param>
+        /// <param name="spriteBatch">The spritebatch to draw with</param>
+        /// <param name="color">The colour of the texture</param>
         public static void Draw(this Texture2D texture, Vector2 position, SpriteBatch spriteBatch, Color color)
         {
             spriteBatch.Draw(texture, position, color);

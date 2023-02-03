@@ -66,8 +66,16 @@ namespace UILibrary.Buttons
             spriteBatch.Draw(texture, (Rectangle)aabb, Color.White);
         }
 
+        /// <summary>
+        /// Update the button object
+        /// </summary>
         public override void Update() { }
 
+        /// <summary>
+        /// Create a new button object
+        /// </summary>
+        /// <param name="aabb">The bounding box of the button</param>
+        /// <param name="texture">The texture to use for the button</param>
         public Button(AABB aabb, Texture2D texture)
         {
             this.aabb = aabb;

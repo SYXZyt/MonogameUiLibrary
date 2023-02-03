@@ -3,19 +3,40 @@ using System.Collections;
 
 namespace UILibrary.Buttons
 {
+    /// <summary>
+    /// A collection of switches all bound together
+    /// </summary>
     public sealed class SwitchArray : Element, IEnumerable
     {
         private readonly List<Switch> switches;
         private int selectedSwitch;
 
+        /// <summary>
+        /// Get the switch at a specific index
+        /// </summary>
+        /// <param name="index">The index to get</param>
+        /// <returns>The switch at the given index</returns>
         public Switch this[int index]
         {
             get => switches[index];
         }
 
+        /// <summary>
+        /// Add a new switch to the collection
+        /// </summary>
+        /// <param name="_switch">The switch to add</param>
         public void AddSwitch(Switch _switch) => switches.Add(_switch);
 
+        /// <summary>
+        /// Get the index of the current switch clicked
+        /// </summary>
+        /// <returns>The index in the collection or -1 if no switches clicked</returns>
         public int GetActiveIndex() => selectedSwitch;
+
+        /// <summary>
+        /// Force a switch to become the active one
+        /// </summary>
+        /// <param name="selectedSwitch">The index of the switch to set as active</param>
         public void SetActiveIndex(int selectedSwitch)
         {
             Clear();
@@ -23,6 +44,9 @@ namespace UILibrary.Buttons
             switches[selectedSwitch].SetState(true);
         }
 
+        /// <summary>
+        /// Unclick all switches
+        /// </summary>
         public void Clear()
         {
             foreach (Switch s in switches)
@@ -31,6 +55,9 @@ namespace UILibrary.Buttons
             } selectedSwitch = -1;
         }
 
+        /// <summary>
+        /// Update the collection
+        /// </summary>
         public override void Update()
         {
             bool hasUpdated = false;
@@ -67,6 +94,10 @@ namespace UILibrary.Buttons
             if (selectedSwitch > -1 && !switches[selectedSwitch].State) selectedSwitch = -1;
         }
 
+        /// <summary>
+        /// Draw all of the loaded switches
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> to use to draw</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             foreach (Switch s in switches) s.Draw(spriteBatch);
@@ -82,6 +113,9 @@ namespace UILibrary.Buttons
             return GetEnumerator();
         }
 
+        /// <summary>
+        /// Create a new switch array
+        /// </summary>
         public SwitchArray()
         {
             switches = new();

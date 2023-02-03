@@ -6,6 +6,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace UILibrary.IO
 {
+    /// <summary>
+    /// Class representing a textbox which receives key presses
+    /// </summary>
     public sealed class Textbox : Element
     {
         [DllImport("user32.dll", CharSet = CharSet.Auto, ExactSpelling = true, CallingConvention = CallingConvention.Winapi)]
@@ -34,33 +37,59 @@ namespace UILibrary.IO
 
         private readonly Texture2D background;
 
+        /// <summary>
+        /// The bounding box of the textbox
+        /// </summary>
         public AABB GetBoundingBox => new((short)position.X, (short)position.Y, (short)(characterLimit * charSize), (short)height);
 
         private bool isActive;
 
+        /// <summary>
+        /// Has the enter key been pressed on the textbox
+        /// </summary>
         public bool IsEntered
         {
             get => isEntered;
             set => isEntered = value;
         }
 
+        /// <summary>
+        /// Get the text currently loaded into the text buffer
+        /// </summary>
+        /// <returns>The <see cref="System.Text.StringBuilder"/> storing the text buffer</returns>
         public StringBuilder GetText() => text;
 
+        /// <summary>
+        /// Set if the texbox is active
+        /// </summary>
+        /// <param name="isActive"></param>
         public void SetActive(bool isActive) => this.isActive = isActive;
 
-        public bool SetFocus(bool isFocused) => this.isFocused = isFocused;
+        /// <summary>
+        /// Set if the textbox currently has focus
+        /// </summary>
+        /// <param name="isFocused">True if focused</param>
+        public void SetFocus(bool isFocused) => this.isFocused = isFocused;
 
         private void Append(char c)
         {
             if (text.Length < characterLimit) text.Append(c);
         }
 
+        /// <summary>
+        /// Change the origin of the textbox
+        /// </summary>
+        /// <param name="origin">The offset to use</param>
         public void ChangeOrigin(Origin origin)
         {
             this.origin = origin;
             originOffset = CalculateOriginOffset();
         }
 
+        /// <summary>
+        /// Calculate the new offset of the textbox
+        /// </summary>
+        /// <returns>Vector containing the draw offset</returns>
         public Vector2 CalculateOriginOffset()
         {
             Vector2 size = new(characterLimit * charSize, height);
@@ -81,6 +110,9 @@ namespace UILibrary.IO
             return originOffset;
         }
 
+        /// <summary>
+        /// Update the textbox
+        /// </summary>
         public override void Update()
         {
             tick++;
@@ -163,6 +195,10 @@ namespace UILibrary.IO
             if (KeyboardController.IsPressed(Keys.Divide)) Append('/');
         }
 
+        /// <summary>
+        /// Draw the textbox to the screen
+        /// </summary>
+        /// <param name="spriteBatch">The sprite batch to use</param>
         public override void Draw(SpriteBatch spriteBatch)
         {
             Color color = isFocused ? Color.White : Color.White * 0.7f;
@@ -173,6 +209,16 @@ namespace UILibrary.IO
             label.DrawWithShadow(spriteBatch);
         }
 
+        /// <summary>
+        /// Create a new textbox object
+        /// </summary>
+        /// <param name="position">The position of the textbox</param>
+        /// <param name="font">The font for the text in the textbox</param>
+        /// <param name="background">The background texture of the textbox</param>
+        /// <param name="characterLimit">The max amount of characters which can be stored in the buffer/param>
+        /// <param name="fontScale">The scale of the font when drawing the textbuffer</param>
+        /// <param name="origin">The origin to draw the textbox with</param>
+        /// <param name="placeholder">String containing any text which needs to be preloaded into the buffer</param>
         public Textbox(Vector2 position, SpriteFont font, Texture2D background, int characterLimit, float fontScale, Origin origin, string placeholder = "")
         {
             this.position = position;

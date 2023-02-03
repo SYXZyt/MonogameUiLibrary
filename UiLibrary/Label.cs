@@ -3,6 +3,9 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace UILibrary
 {
+    /// <summary>
+    /// Class representing text on the screen
+    /// </summary>
     public sealed class Label
     {
         private string label;
@@ -15,39 +18,82 @@ namespace UILibrary
         private float rotation;
         private float opacity;
 
+        /// <summary>
+        /// The position of the text
+        /// </summary>
         public Vector2 Position => position;
+
+        /// <summary>
+        /// The scale of the text
+        /// </summary>
         public float Scale => scale;
+
+        /// <summary>
+        /// The opacity of the text
+        /// </summary>
         public float Opacity => opacity;
 
+        /// <summary>
+        /// Change the colour of the text
+        /// </summary>
+        /// <param name="colour">The new colour</param>
         public void SetColour(Color colour) => this.colour = colour;
 
+        /// <summary>
+        /// Update the label text
+        /// </summary>
+        /// <param name="label">The new text</param>
         public void SetLabelText(string label)
         {
             this.label = label;
             originOffset = CalculateOriginOffset();
         }
 
+        /// <summary>
+        /// Update the scale of the text
+        /// </summary>
+        /// <param name="scale">The new scale of the text</param>
         public void SetScale(float scale)
         {
             this.scale = scale;
             originOffset = CalculateOriginOffset();
         }
 
+        [Obsolete("Rotation breaks the origin offset of the label and should not be used")]
         public void SetRotation(float rotation) => this.rotation = rotation;
 
+        /// <summary>
+        /// Update the text opacity
+        /// </summary>
+        /// <param name="opacity">The new opacity (Must be a normalised value (0.0f - 1.0f))</param>
         public void SetOpacity(float opacity) => this.opacity = Math.Clamp(opacity, 0f, 1f);
 
+        /// <summary>
+        /// Update the text position
+        /// </summary>
+        /// <param name="position">The new position</param>
         public void MoveLabel(Vector2 position) => this.position = position;
 
+        /// <summary>
+        /// Change the origin of the label
+        /// </summary>
+        /// <param name="origin">The new origin</param>
         public void ChangeOrigin(Origin origin)
         {
             this.origin = origin;
             originOffset = CalculateOriginOffset();
         }
 
-
+        /// <summary>
+        /// Draw the label to the screen
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> used to draw</param>
         public void Draw(SpriteBatch spriteBatch) => spriteBatch.DrawString(font, label, position - originOffset, colour * opacity, rotation, Vector2.Zero, scale, SpriteEffects.None, 0f);
 
+        /// <summary>
+        /// Draw the label with an outline
+        /// </summary>
+        /// <param name="spriteBatch">The <see cref="Microsoft.Xna.Framework.Graphics.SpriteBatch"/> used to draw</param>
         public void DrawWithShadow(SpriteBatch spriteBatch)
         {
             //Most of this code is ripped from my in development game "Stranded In Space II"
@@ -98,6 +144,10 @@ namespace UILibrary
             Draw(spriteBatch);
         }
 
+        /// <summary>
+        /// Calculate the draw offset given the set origin
+        /// </summary>
+        /// <returns>The vector containing the offset</returns>
         public Vector2 CalculateOriginOffset()
         {
             Vector2 labelSize = font.MeasureString(label) * scale;
@@ -132,7 +182,17 @@ namespace UILibrary
             return originOffset;
         }
 
-        public Label(string label, float scale, Vector2 position, Color colour, SpriteFont font, Origin origin, float rotation)
+        /// <summary>
+        /// Create a new label object
+        /// </summary>
+        /// <param name="label">The text of the label</param>
+        /// <param name="scale">The text scale</param>
+        /// <param name="position">The position of the label</param>
+        /// <param name="colour">The colour of the text</param>
+        /// <param name="font">The font of the text</param>
+        /// <param name="origin">The origin of the text</param>
+        /// <param name="rotation">The degrees of the label (DEPRECATED. DO NOT CHANGE FROM 0.0f)</param>
+        public Label(string label, float scale, Vector2 position, Color colour, SpriteFont font, Origin origin, float rotation = 0f)
         {
             this.label = label;
             this.scale = scale;
