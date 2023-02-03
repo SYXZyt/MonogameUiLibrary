@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace UILibrary
 {
@@ -89,6 +90,12 @@ namespace UILibrary
             }
 
             return false;
+        }
+
+        public void DrawDebugOverlay(GraphicsDevice graphicsDevice, SpriteBatch spriteBatch, float opacity)
+        {
+            Texture2D texture = Extension.CreateTexture(graphicsDevice, width, height, c => Color.Red);
+            texture.Draw(new Vector2(x, y), spriteBatch, Color.White * opacity);
         }
 
         /// <summary>
