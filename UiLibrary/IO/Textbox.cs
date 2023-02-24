@@ -73,6 +73,8 @@ namespace UILibrary.IO
 
         private void Append(char c)
         {
+            isEntered = false;
+
             if (text.Length < characterLimit) text.Append(c);
         }
 
@@ -132,7 +134,12 @@ namespace UILibrary.IO
             if (!isFocused) return;
 
             //If you read this, I'm sorry
-            if (KeyboardController.IsPressed(Keys.Back)) if (text.Length > 0) text.Length--;
+            if (KeyboardController.IsPressed(Keys.Back))
+            {
+                isEntered = false;
+                if (text.Length > 0) text.Length--;
+            }
+
             if (KeyboardController.IsPressed(Keys.Enter)) isEntered = true;
             if (KeyboardController.IsPressed(Keys.Space)) Append(' ');
             if (KeyboardController.IsPressed(Keys.A)) Append(CapsLock ? 'A' : 'a');
@@ -231,7 +238,7 @@ namespace UILibrary.IO
             height = int.MinValue;
 
             byte ascii = 0;
-            for (byte i = 0; i < byte.MaxValue/2; i++)
+            for (byte i = 0; i < byte.MaxValue / 2; i++)
             {
                 if (font.MeasureString($"{Convert.ToChar(i)}").X > charSize)
                 {
@@ -239,9 +246,9 @@ namespace UILibrary.IO
                 }
             }
 
-            string text = new(Convert.ToChar(ascii), characterLimit+1);
+            string text = new(Convert.ToChar(ascii), characterLimit + 1);
             Vector2 max = font.MeasureString(text);
-            charSize = (int)Math.Ceiling(max.X * fontScale) / characterLimit+1;
+            charSize = (int)Math.Ceiling(max.X * fontScale) / characterLimit + 1;
             height = (int)Math.Ceiling((max.Y * fontScale));
 
             isFocused = false;
