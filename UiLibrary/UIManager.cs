@@ -1,10 +1,16 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
+using UILibrary.Scenes;
 
 namespace UILibrary
 {
     public sealed class UIManager
     {
+        private bool isActive;
+
         private readonly List<Element> elements;
+
+        private void Activate(object sender, EventArgs args) => isActive = true;
+        private void Deactivate(object sender, EventArgs args) => isActive = false;
 
         public Element Get(int index)
         {
@@ -21,7 +27,9 @@ namespace UILibrary
 
         public void Update()
         {
-            foreach (Element b in elements) b.Update();
+            foreach (Element b in elements)
+                if (isActive)
+                    b.Update();
         }
 
         public void Draw(SpriteBatch spriteBatch)
@@ -35,6 +43,8 @@ namespace UILibrary
         public UIManager()
         {
             elements = new();
+            SceneManager.Instance.Activated += Activate;
+            SceneManager.Instance.Deactivated += Deactivate;
         }
     }
 }
